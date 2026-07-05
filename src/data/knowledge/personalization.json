@@ -1,0 +1,55 @@
+{
+  "advertencia_etica": "Toda afirmación biológica va acompañada de su mecanismo fisiológico y una declaración explícita de la fuerza de la evidencia. La personalización por región nunca se reduce a determinismo biológico étnico. La variación dentro de cualquier población supera la variación promedio entre poblaciones.",
+  "adaptacion_altitud": {
+    "evidencia": "SÓLIDA — décadas de investigación. El estudio fundacional fue sobre población quechua peruana (Frisancho, Universidad de Michigan, décadas 1960-70).",
+    "poblaciones_comparadas": {
+      "andina_quechua_aymara": {
+        "mecanismo": "Estrategia hematológica: hemoglobina elevada (aymaras: 19.2 g/dl hombres, 17.8 g/dl mujeres), tórax agrandado, volumen pulmonar mayor, respuesta ventilatoria embotada. Componente genético real (heredable, no solo aclimatación).",
+        "nota": "Ni siquiera quechuas y aymaras comparten la misma estrategia — soluciones evolutivas distintas a la misma presión ambiental."
+      },
+      "tibetana_himalaya": {
+        "mecanismo": "Estrategia ventilatoria: mayor frecuencia respiratoria en reposo, menor hemoglobina que andinos pero mayor eficiencia de extracción de O2. Variante genética EPAS1 ('gen del atleta de altitud').",
+        "nota": "Ruta evolutiva completamente distinta a la andina para resolver el mismo problema"
+      },
+      "etiope_tierras_altas": {
+        "mecanismo": "Tercera vía: combinación de mecanismos. Menos estudiada que las dos anteriores.",
+        "nota": "Evidencia más limitada, campo activo de investigación"
+      }
+    },
+    "implicaciones_entrenamiento": "Atletas de origen andino en altura pueden tolerar volúmenes de trabajo aeróbico más altos antes de hipoxia limitante. En bajada al nivel del mar, ventaja temporal en VO2max por mayor masa eritrocitaria."
+  },
+  "adaptacion_calor_tropical": {
+    "evidencia": "DÉBIL para poblaciones amazónicas peruanas específicamente — vacío de investigación confirmado. Literatura general sobre poblaciones tropicales existe pero no específica para Amazonía peruana.",
+    "lo_que_sí_existe": "Estudios sobre termorregulación en poblaciones tropicales generales: mayor área de superficie específica relativa al volumen corporal, menor respuesta sudomotora por aclimatación crónica. Ventaja en tolerancia a estrés por calor.",
+    "recomendacion_sistema": "En módulo de personalización: basarse en biodiversidad alimentaria amazónica (bien documentada) más que en fisiología comparada (evidencia débil). Ser transparente con el usuario sobre este límite."
+  },
+  "adaptacion_frio_artico": {
+    "evidencia": "MODERADA — plausible pero evidencia poblacional comparativa limitada",
+    "mecanismos_propuestos": "Termogénesis sin temblor (grasa parda activada), redistribución circulatoria periférica, mayor tolerancia a vasoconstricción de extremidades. Documentado en inuit, yakutos, sami.",
+    "nota": "Útil para contextualizar tolerancia al frío en entrenamientos al aire libre en regiones frías"
+  },
+  "marcadores_geneticos": {
+    "ACTN3_R577X": {
+      "funcion": "Determina presencia/ausencia de alfa-actinina-3 en fibras de contracción rápida",
+      "genotipo_RR_RX": "Mayor potencia muscular, mejor rendimiento en sprint y fuerza",
+      "genotipo_XX": "Sobrerrepresentado en atletas de resistencia de élite",
+      "limitacion_CRITICA": "Revisión meta-analítica reciente: heterogeneidad sustancial entre estudios, magnitud práctica del efecto LIMITADA. Poder predictivo individual modesto. No justifica cambios drásticos de programación por sí solo.",
+      "disponibilidad_datos_peru": "VACÍO — no hay estudios de distribución alélica específicamente en población peruana o andina"
+    },
+    "ACE_I_D": {
+      "funcion": "Polimorfismo del gen de la enzima convertidora de angiotensina, relacionado con adaptaciones cardiovasculares",
+      "alelo_I": "Asociado a mayor rendimiento de resistencia aeróbica",
+      "alelo_D": "Asociado a mayor ganancia de fuerza y potencia",
+      "limitacion": "Misma advertencia que ACTN3: efecto individual modesto, no debe sobredimensionarse"
+    }
+  },
+  "contexto_recursos_regional": {
+    "nota": "Sub-eje puramente socioeconómico, sin supuestos biológicos",
+    "estructura": "Ver nutrition.json → contexto_regional_peru para datos de Perú. Este archivo se expandirá con datos globales cuando la investigación se complete.",
+    "pendiente": "Datos FAO/OMS por continente y subregión — investigación en curso"
+  },
+  "personalización_individual": {
+    "variables_base": ["nivel (novato/básico/intermedio/avanzado/elite)", "edad", "sexo biológico", "peso", "talla", "nivel de actividad", "objetivo principal", "tipo de entrenamiento", "restricciones alimentarias", "presupuesto", "acceso a infraestructura", "lesiones/limitaciones"],
+    "nota": "Esta capa opera sobre el individuo medido directamente — no requiere inferencias poblacionales"
+  }
+}

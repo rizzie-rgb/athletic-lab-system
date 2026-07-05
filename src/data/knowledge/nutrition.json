@@ -1,0 +1,63 @@
+{
+  "principio_central": "No se diseñan dietas cerradas. El sistema parte del patrón alimentario real del usuario y sugiere ajustes mínimos y específicos. La restricción flexible supera consistentemente a la restricción rígida en adherencia a largo plazo.",
+  "evidencia_base": "Estudios longitudinales confirman que la restricción flexible fue uno de los predictores más fuertes de pérdida de peso sostenida a 2 años, mientras que la restricción rígida predijo recuperación de peso entre año 1 y año 2.",
+  "alerta_diseno": "La frontera entre 'optimizar la alimentación' y 'generar ansiedad alimentaria' debe estar resuelta desde la arquitectura. Evitar conteo obsesivo, lenguaje de prohibición, mecánicas que refuercen patrones desordenados.",
+  "calculo_tdee": {
+    "formula": "Mifflin-St Jeor BMR: Hombre = 10*peso + 6.25*talla - 5*edad + 5 / Mujer = 10*peso + 6.25*talla - 5*edad - 161",
+    "multiplicadores": {
+      "sedentario": 1.2,
+      "ligero": 1.375,
+      "moderado": 1.55,
+      "intenso": 1.725
+    },
+    "ajuste_objetivo": {
+      "perder": "TDEE - 400 kcal",
+      "ganar": "TDEE + 300 kcal",
+      "rendimiento": "TDEE (mantenimiento con alta proteína)",
+      "recomposicion": "TDEE (ciclado: +200 días entreno, -200 descanso)",
+      "salud": "TDEE"
+    },
+    "proteina": "2.2g por kg de peso corporal como punto de partida para atletas activos"
+  },
+  "auditoria_rapida": [
+    "¿Tu primera comida del día tiene una fuente de proteína identificable?",
+    "¿Comiste algo en la ventana de 1-2 horas después de entrenar?",
+    "¿Cuántas veces a la semana tu única bebida es agua frente a azucaradas?",
+    "¿Hay algún día de la semana donde comas notablemente menos por falta de tiempo, no de hambre?",
+    "¿Cuántas comidas al día incluyen alguna verdura o fruta?"
+  ],
+  "contexto_regional_peru": {
+    "fuente": "INEI / ENAHO",
+    "vulnerabilidad_alimentaria": {
+      "sierra": "59% de hogares en inseguridad alimentaria",
+      "selva": "57.6%",
+      "costa": "44%",
+      "departamentos_criticos": ["Puno 74.7%", "Ayacucho 64%", "Cajamarca 63.6%", "Amazonas 62.9%", "Huancavelica 60.3%"]
+    },
+    "precios_diferenciados": {
+      "barato_sierra": ["Papa", "Carnes rojas (ovino)", "Tubérculos andinos"],
+      "barato_selva": ["Arroz", "Plátano", "Frutas tropicales"],
+      "barato_costa": ["Aves (pollo)", "Pescado de mar (6.4 kg/persona/año promedio nacional)"]
+    },
+    "paradoja_nutricional": "Las zonas de mayor agrobiodiversidad (sierra: 600+ variedades de papa; selva: ~100 especies cultivadas) registran los mayores índices de anemia: Loreto >50% niños <5 años, Cusco 46%. Abundancia de recursos ≠ acceso óptimo.",
+    "patron_consumo": "25.8% de hogares peruanos consumió 2 o menos comidas al día en semana reciente. Patrón dominante: alto en carbohidratos y frituras, bajo en vegetales, frutas, menestras y grasas de calidad.",
+    "pan_consumo_kg_anio": {"selva": 13.8, "costa": 25.4, "sierra": 25.6}
+  },
+  "principios_optimizacion": {
+    "ingenieria_de_porciones": "El sistema no altera los platos típicos — ajusta proporciones para optimizar macros sin cambiar lo que la persona come culturalmente.",
+    "complementacion_proteica": "Arroz + menestras (frijoles, lentejas, pallares) = aminograma completo comparable a proteína animal. Estrategia clave para presupuesto crítico.",
+    "timing_basico": {
+      "pre_entreno": "Carbohidrato de fácil digestión 45-90 min antes (plátano, pan, arroz). No grasa pesada.",
+      "post_entreno": "Proteína + carbohidrato en ventana de 1-2 horas. No es obligatorio inmediato pero sí conveniente.",
+      "hidratacion": "Mínimo 2L agua/día. +500ml por hora de entreno intenso. Orina amarilla pálida = bien hidratado."
+    }
+  },
+  "fuentes_proteina_economica_peru": [
+    {"alimento": "Huevo", "proteina_por_100g": "13g", "costo_relativo": "muy bajo", "nota": "Aminograma casi completo. Yema contiene micronutrientes clave."},
+    {"alimento": "Lenteja / Frijol / Pallares", "proteina_por_100g": "8-9g cocido", "costo_relativo": "muy bajo", "nota": "Combinado con arroz = proteína completa"},
+    {"alimento": "Pollo (pechuga)", "proteina_por_100g": "31g", "costo_relativo": "bajo-medio", "nota": "Más barato en costa"},
+    {"alimento": "Atún en lata", "proteina_por_100g": "28g", "costo_relativo": "bajo", "nota": "Alta densidad proteica por costo"},
+    {"alimento": "Leche evaporada", "proteina_por_100g": "8g", "costo_relativo": "bajo", "nota": "Disponible en todo el país, larga conservación"},
+    {"alimento": "Quinua", "proteina_por_100g": "14g cocida", "costo_relativo": "medio", "nota": "Proteína completa, más cara pero disponible en sierra"}
+  ]
+}

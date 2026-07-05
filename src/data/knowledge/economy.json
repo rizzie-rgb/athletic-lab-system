@@ -1,0 +1,54 @@
+{
+  "principio": "Equivalencia funcional: importa qué función biomecánica cumple el objeto, no cómo se ve. El sistema enseña a pensar en principios, no en listas de compras.",
+  "evidencia": "Para fuerza e hipertrofia, lo que determina la adaptación es la sobrecarga progresiva, el volumen suficiente y la proximidad al fallo — no el implemento. Herramientas improvisadas funcionan bien si permiten ajustar la carga y la dificultad.",
+  "tradiciones_globales": {
+    "europa_este_rusia": "Street workout / calistenia urbana: parques, plazas y mobiliario urbano sustituyen al gimnasio. Lógica de autoconstrucción del entrenamiento con barras, anillas y progresiones gimnásticas.",
+    "brasil": "Calistenia de parques como movimiento urbano ligado a cultura física popular. Barras, paralelas, empuje, tracción y core en plazas comunitarias.",
+    "francia": "Parkour: Georges Hébert → Raymond Belle → David Belle. El entorno urbano como 'gimnasio'. Desplazamiento eficiente sin infraestructura.",
+    "contextos_militares": "Rucking (marcha con mochila cargada): convierte caminata en estímulo de carga. Bidones, sacos, macutos — tradición ampliamente documentada en preparación táctica.",
+    "africa_luchas": "Lucha senegalesa y nuba: acondicionamiento integrado en la práctica — carreras, saltos, agarre, resistencia sin equipamiento formal. Fuerza funcional por repetición y oposición.",
+    "india": "Akhara: combina peso corporal, mallakhamb y movilidad/fuerza sin gimnasio moderno.",
+    "asia_central": "Tradiciones marciales con mazas, clavas, arena y terreno abierto como implementos de resistencia."
+  },
+  "equivalencias": [
+    {"cat": "Carga", "original": "Mancuernas", "sustituto": "Mochila cargada con libros / botellas de agua / arena / ladrillos", "principio": "Carga externa progresiva — pesa en báscula doméstica para tener el dato exacto"},
+    {"cat": "Carga", "original": "Chaleco lastrado", "sustituto": "Mochila ajustada al cuerpo con bolsas internas de arena", "principio": "Carga vertical distribuida — ventaja en carrera y saltos"},
+    {"cat": "Carga", "original": "Kettlebell", "sustituto": "Bolsa con asa de cuerda cargada de arena / garrafón con asa", "principio": "Carga con centro de masa desplazado"},
+    {"cat": "Carga", "original": "Barra olímpica + discos", "sustituto": "Progresiones de palanca corporal + mochila para añadir carga en dominadas y sentadillas", "principio": "Intensidad relativa > carga absoluta para la mayoría de adaptaciones"},
+    {"cat": "Agarre", "original": "Hangboard de escalada", "sustituto": "Borde resistente de estante / marco de puerta / toalla enrollada en barra", "principio": "Fuerza de dedos y antebrazo por carga isométrica progresiva"},
+    {"cat": "Agarre", "original": "Gripper / entrenador de agarre", "sustituto": "Pelota de tenis o de espuma — 3x20 apretones, énfasis en meñique y anular", "principio": "Crítico para judo: el kumi-kata se sostiene por esos dos dedos"},
+    {"cat": "Agarre", "original": "Farmer walk handles", "sustituto": "Baldes con asa cargados de agua o arena / bolsas de compra con peso", "principio": "Fuerza de agarre + transporte cargado + core anti-lateral"},
+    {"cat": "Tirón", "original": "Barra de dominadas", "sustituto": "Rama gruesa firme y segura / marco de puerta reforzado / barra de parque", "principio": "Tirón vertical en suspensión — verificar siempre la estabilidad estructural"},
+    {"cat": "Tirón", "original": "Anillas de gimnasia", "sustituto": "Correas de tela resistente o asas de cuerda colgadas de soporte fijo / toallas anudadas", "principio": "Agarre inestable, activa estabilizadores — mismo beneficio neuromuscular"},
+    {"cat": "Tirón", "original": "Máquina de remo / poleas", "sustituto": "Banda elástica anclada a estructura fija / fila debajo de mesa", "principio": "Tirón horizontal resistido"},
+    {"cat": "Empuje", "original": "Banco de pesas", "sustituto": "Dos sillas firmes de igual altura / banca de parque / cama firme", "principio": "Soporte elevado para ROM extendido en push-ups"},
+    {"cat": "Empuje", "original": "Paralelas de fondos", "sustituto": "Dos sillas firmes de respaldo alto / bordes de mesa robusta / dos sillas apoyadas en pared", "principio": "Empuje vertical con ROM completo en hombro"},
+    {"cat": "Empuje", "original": "Press de banca pesado", "sustituto": "Push-ups con tempo lento (4 seg excéntrico) + variantes unilaterales + mochila en la espalda", "principio": "La intensidad relativa determina la adaptación, no la carga absoluta"},
+    {"cat": "Core", "original": "Rueda abdominal", "sustituto": "Toalla sobre piso liso / tabla pequeña con ruedas de silla vieja", "principio": "Anti-extensión de core en movimiento — misma mecánica de carga"},
+    {"cat": "Core", "original": "Rodillo de espuma (foam roller)", "sustituto": "Botella de vidrio o PVC envuelta en tela / pelota de tenis para puntos específicos", "principio": "Liberación miofascial por presión sobre tejido blando"},
+    {"cat": "Acondicionamiento", "original": "Soga de velocidad", "sustituto": "Cuerda de tendal cortada a medida axila-suelo — costo mínimo", "principio": "Coordinación de tobillo, reactividad y acondicionamiento cardiovascular"},
+    {"cat": "Acondicionamiento", "original": "Cajón pliométrico", "sustituto": "Escalón firme de escalera / banco resistente de parque / bloque de cemento estable", "principio": "Salto vertical con aterrizaje controlado — verificar estabilidad siempre"},
+    {"cat": "Movilidad", "original": "Bandas de movilidad", "sustituto": "Cámara de neumático de bicicleta cortada / media de licra resistente", "principio": "Resistencia elástica variable para distracción articular"}
+  ],
+  "logica_de_traduccion": {
+    "sin_barra": "Mesa firme / marco seguro / toalla / mochila / borde estable",
+    "sin_discos": "Agua / arena / arroz / botellas / piedras / bolsas selladas",
+    "sin_gimnasio": "Parque / escaleras / muro / poste / banco / suelo y carga portátil",
+    "sin_equipamiento": "Palancas corporales / unilateralidad / tempo / pausas / rango de movimiento / densidad de trabajo"
+  },
+  "equipamiento_usuario": {
+    "nota": "Este bloque puede personalizarse según el perfil del usuario",
+    "items_documentados": [
+      "Ligas de resistencia con asa — resistencia posiblemente insuficiente para nivel actual; explotar en rangos isométricos finales",
+      "Eagle Catcher (entrenador de agarre) — meñique sin resorte: compensar con pelota de tenis en sets específicos para ese dedo",
+      "Tonificador de pecho (tubo con resorte) — útil para aducción horizontal y calentamiento de pectoral",
+      "Chaleco lastrado 10kg Everlast — relleno de arena cosido, no intercambiable; usar mochila para cargas variables",
+      "Mochila con enciclopedias y ladrillos — pesar en báscula para dato exacto; funcional para dominadas y sentadillas",
+      "Máquina Weider Total Body Workout — variantes adicionales de empuje y tirón",
+      "Soga para saltar — acondicionamiento cardiovascular y coordinación tobillo",
+      "Rueda abdominal — anti-extensión de core",
+      "Foam roller — recuperación miofascial",
+      "Palo de escoba — movilidad de hombro en overhead, trabajo técnico de esgrima clásica"
+    ]
+  }
+}

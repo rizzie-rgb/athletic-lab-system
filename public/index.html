@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0C0C0A">
+<meta name="description" content="Athletic Lab System — Sistema híbrido de athleticism y bienestar. Être fort pour être utile.">
+<title>Athletic Lab System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/css/main.css">
+</head>
+<body>
+
+<div id="grain" aria-hidden="true"></div>
+
+<div class="app-shell">
+
+  <!-- ══════════════════════════════════════════════
+       SPLASH
+  ══════════════════════════════════════════════ -->
+  <div id="s-splash" class="screen" style="z-index:50;justify-content:space-between;padding:48px 32px 40px">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding-top:40px">
+      <div style="width:64px;height:64px;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+        <span class="fb" style="font-size:40px;color:var(--accent);line-height:1">A</span>
+      </div>
+      <h1 class="fb" style="font-size:56px;letter-spacing:.04em;text-align:center;line-height:.9">ATHLETIC<br><span style="color:var(--accent)">LAB</span></h1>
+      <div style="width:40px;height:1px;background:var(--border);margin:18px 0"></div>
+      <p class="fi" style="font-size:16px;color:var(--muted);text-align:center;max-width:260px;line-height:1.5">"Être fort pour être utile." — Hébert, 1912</p>
+      <p class="fm" style="font-size:11px;color:var(--dim);text-align:center;max-width:260px;margin-top:12px;line-height:1.7">Sistema híbrido de athleticism y bienestar. Funciona con o sin gimnasio, con o sin presupuesto.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn-primary" id="btn-start">Comenzar diagnóstico →</button>
+      <button class="btn-secondary" id="btn-enter">Ya tengo perfil — Entrar</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       ONBOARDING
+  ══════════════════════════════════════════════ -->
+  <div id="s-onboard" class="screen hidden flex-col" style="z-index:40">
+    <div style="padding:18px 20px 14px;background:var(--s1);border-bottom:1px solid var(--border);flex-shrink:0">
+      <div class="flex-between mb-10">
+        <span class="fm" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)" id="step-label">Paso 1 — Biometría</span>
+        <span class="fm" style="font-size:11px;color:var(--accent);font-weight:700" id="step-count">1 / 4</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="step-progress" style="width:25%"></div></div>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:20px" id="step-area">
+
+      <!-- Step 1 — Biometría -->
+      <div class="step-content active flex-col gap-14" id="step-1">
+        <p class="fi" style="font-size:14px;color:var(--muted);line-height:1.5">Datos básicos para calibrar el sistema. Usa estimaciones si no tienes medición exacta.</p>
+        <div><label class="field-label">Nombre / Pseudónimo</label><input type="text" id="in-name" placeholder="Atleta_01"></div>
+        <div class="grid-2">
+          <div><label class="field-label">Edad</label><input type="number" id="in-age" value="20"></div>
+          <div><label class="field-label">Sexo biológico</label><select id="in-sex"><option value="M">Masculino</option><option value="F">Femenino</option></select></div>
+        </div>
+        <div class="grid-2">
+          <div><label class="field-label">Talla (cm)</label><input type="number" id="in-height" value="169"></div>
+          <div><label class="field-label">Peso (kg)</label><input type="number" id="in-weight" value="68"></div>
+        </div>
+        <div><label class="field-label">Región</label>
+          <select id="in-country">
+            <option value="PE">Perú (S/.)</option><option value="MX">México (MXN)</option>
+            <option value="CO">Colombia (COP)</option><option value="AR">Argentina (ARS)</option>
+            <option value="CL">Chile (CLP)</option><option value="ES">España (EUR)</option>
+            <option value="US">EE.UU. (USD)</option><option value="BR">Brasil (BRL)</option>
+          </select>
+        </div>
+        <div><label class="field-label">Nivel de actividad</label>
+          <select id="in-activity">
+            <option value="sedentario">Sedentario — trabajo de escritorio</option>
+            <option value="ligero">Ligero — actividad cotidiana normal</option>
+            <option value="moderado" selected>Moderado — entrena 3-5 días/sem</option>
+            <option value="intenso">Intenso — atleta de alto desgaste</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 2 — Entrenamiento -->
+      <div class="step-content flex-col gap-14" id="step-2">
+        <p class="fi" style="font-size:14px;color:var(--muted);line-height:1.5">Variables de entrenamiento para calibrar el balance energético y la programación.</p>
+        <div><label class="field-label">Tipo de entrenamiento principal</label>
+          <select id="in-train-type">
+            <option value="calistenia">Calistenia / Peso Corporal</option>
+            <option value="hibrido" selected>Híbrido (Gym + Calistenia + Atletismo)</option>
+            <option value="fuerza">Fuerza / Potencia (Gym primario)</option>
+            <option value="cardio">Cardio / Resistencia</option>
+            <option value="combate">Deportes de Combate (Judo / Lucha / MMA)</option>
+          </select>
+        </div>
+        <div class="grid-2">
+          <div><label class="field-label">Frecuencia (días/sem)</label><input type="number" id="in-freq" value="5" min="1" max="7"></div>
+          <div><label class="field-label">Duración (min/sesión)</label><input type="number" id="in-dur" value="70" min="20" max="180"></div>
+        </div>
+        <div>
+          <label class="field-label">Disciplinas de interés</label>
+          <div class="capsule-group" id="disc-caps">
+            <span class="capsule sel">Calistenia</span>
+            <span class="capsule sel">Atletismo</span>
+            <span class="capsule sel">Judo / Lucha</span>
+            <span class="capsule">Parkour</span>
+            <span class="capsule">Boxeo / Sanda</span>
+            <span class="capsule">Breakdance</span>
+            <span class="capsule">Escalada</span>
+            <span class="capsule">Movilidad / FRC</span>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div><label class="field-label">Sueño (horas/noche)</label><input type="number" id="in-sleep" value="7" min="3" max="12"></div>
+          <div><label class="field-label">Profesión / Labor</label><input type="text" id="in-job" placeholder="Estudiante universitario"></div>
+        </div>
+      </div>
+
+      <!-- Step 3 — Objetivo -->
+      <div class="step-content flex-col gap-12" id="step-3">
+        <p class="fi" style="font-size:14px;color:var(--muted);line-height:1.5">Define el vector biológico. El sistema adapta nutrición y entrenamiento a esta prioridad.</p>
+        <div class="flex-col gap-10" id="intent-group">
+          <div class="intent-pill sel" data-val="rendimiento"><h4>Rendimiento Atlético</h4><p>Máxima transferencia física. Velocidad, potencia, capacidad.</p></div>
+          <div class="intent-pill" data-val="ganar"><h4>Ganar Músculo / Hipertrofia</h4><p>Superávit calórico controlado con foco proteico.</p></div>
+          <div class="intent-pill" data-val="perder"><h4>Perder Grasa / Definición</h4><p>Déficit sostenible sin perder músculo ni rendimiento.</p></div>
+          <div class="intent-pill" data-val="recomposicion"><h4>Recomposición Corporal</h4><p>Ganar músculo y perder grasa simultáneamente.</p></div>
+          <div class="intent-pill" data-val="salud"><h4>Salud General y Longevidad</h4><p>Actividad sostenible a largo plazo.</p></div>
+        </div>
+        <div><label class="field-label">Contexto adicional (libre)</label>
+          <textarea id="in-goal-text" rows="3" placeholder="Ej: entreno en la universidad, tengo atletismo L/X/V, quiero mejorar en lucha libre…"></textarea>
+        </div>
+      </div>
+
+      <!-- Step 4 — Restricciones -->
+      <div class="step-content flex-col gap-14" id="step-4">
+        <p class="fi" style="font-size:14px;color:var(--muted);line-height:1.5">Último paso. Limitaciones alimentarias y acceso a infraestructura.</p>
+        <div><label class="field-label">Restricciones / Alergias</label><input type="text" id="in-restrict" placeholder="Ninguna / Lactosa / Gluten / Vegetariano…"></div>
+        <div><label class="field-label">Presupuesto de alimentación</label>
+          <select id="in-budget">
+            <option value="critico">Crítico — máximo ahorro, mercados populares</option>
+            <option value="moderado" selected>Moderado — estudiante promedio</option>
+            <option value="comodo">Cómodo — sin restricción fuerte</option>
+          </select>
+        </div>
+        <div><label class="field-label">Acceso a infraestructura</label>
+          <select id="in-infra">
+            <option value="ninguno">Sin gimnasio — solo parque y casa</option>
+            <option value="parque">Parque con barras</option>
+            <option value="gym-basico" selected>Gimnasio básico / universitario</option>
+            <option value="gym-completo">Gimnasio completo con pesas olímpicas</option>
+          </select>
+        </div>
+        <div class="card">
+          <label class="field-label">Lesiones o limitaciones actuales</label>
+          <textarea id="in-injuries" rows="2" placeholder="Ninguna / Rodilla derecha / Hombro izquierdo…"></textarea>
+        </div>
+      </div>
+
+    </div><!-- end step-area -->
+
+    <div style="padding:14px 20px;background:var(--s1);border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0">
+      <button class="btn-secondary" id="btn-back" style="display:none;width:33%">← Atrás</button>
+      <button class="btn-primary" id="btn-next" style="font-size:16px">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       DASHBOARD
+  ══════════════════════════════════════════════ -->
+  <div id="s-dash" class="screen hidden flex-col" style="z-index:30">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="flex-row gap-10">
+        <div style="width:28px;height:28px;border:1px solid var(--accent);display:flex;align-items:center;justify-content:center">
+          <span class="fb" style="font-size:16px;color:var(--accent)">A</span>
+        </div>
+        <div>
+          <div class="fb" style="font-size:15px;letter-spacing:.03em" id="topbar-name">Athletic Lab</div>
+          <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)" id="topbar-meta">SISTEMA ACTIVO</div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:9px;color:var(--muted);letter-spacing:.08em" id="topbar-goal">–</div>
+        <div class="flex-row gap-4" style="justify-content:flex-end;margin-top:3px">
+          <span class="pulse-dot"></span>
+          <span style="font-size:9px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase">en vivo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── MÓDULO: PANEL ─── -->
+    <div class="modcontent" id="mod-panel">
+      <div>
+        <span class="eyebrow">Telemetría de hoy</span>
+        <div class="card mt-8">
+          <div class="flex-between mb-12">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Requerimiento calibrado</span>
+            <span class="tag tag-green">Activo</span>
+          </div>
+          <div class="grid-3 gap-8">
+            <div class="metric"><div class="val" id="d-kcal">–</div><div class="lbl">Kcal</div></div>
+            <div class="metric"><div class="val text-accent" id="d-prot">–</div><div class="lbl">Proteína g</div></div>
+            <div class="metric"><div class="val" style="color:var(--amber)" id="d-cost">–</div><div class="lbl">Costo est.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="flex-between mb-12">
+          <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Esta semana</span>
+          <span class="tag tag-amber">Toca un día →</span>
+        </div>
+        <div id="week-rows-panel">
+          <!-- Renderizado dinámico por renderWeek() en app.js -->
+        </div>
+        <p style="font-size:10px;color:var(--dim);margin-top:10px;font-family:var(--font-serif);font-style:italic">
+          Toca cualquier día para ver la rutina detallada generada por IA según tu perfil.
+        </p>
+      </div>
+      <div class="card">
+        <span class="tag tag-green mb-10" style="display:inline-block">Algoritmo de coexistencia cultural</span>
+        <div class="blockquote">
+          <p>"El sistema no altera tus platos típicos — aplica ingeniería de porciones para optimizar macros sin cambiar lo que comes."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── MÓDULO: ENTRENAMIENTO ─── -->
+    <div class="modcontent hidden" id="mod-entrena">
+      <div class="flex-between">
+        <div><span class="eyebrow">Sistema Híbrido</span><h2 class="fb" style="font-size:28px;line-height:1">ENTRENAMIENTO</h2></div>
+        <span class="tag tag-amber">Intermedio</span>
+      </div>
+
+      <!-- Subtabs entrenamiento -->
+      <div class="flex-row gap-8" id="train-subtabs">
+        <button class="btn-ghost active" data-ttab="sesion">Sesión</button>
+        <button class="btn-ghost" data-ttab="biblioteca">Biblioteca</button>
+      </div>
+
+      <!-- Sesión -->
+      <div class="tab-panel" id="ttab-sesion">
+        <div class="flex-col gap-8" id="disc-list"></div>
+        <div class="card-accent">
+          <div class="flex-between mb-12">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)">Bloque 01 — Fuerza estructural</span>
+            <span class="tag tag-dim">Calistenia</span>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px">
+            <div class="flex-between mb-4"><span style="font-size:12px;font-weight:500">Dominadas estrictas</span><span style="font-size:12px;color:var(--accent)">4 × 6</span></div>
+            <p style="font-size:11px;color:var(--muted)">Arranque muerto, barbilla sobre barra. Excéntrico 3-4 seg.</p>
+          </div>
+          <div style="background:var(--bg);border-left:2px solid var(--amber);padding:8px 12px;border-radius:0 8px 8px 0;font-size:11px">
+            <span style="color:var(--amber);font-weight:500">Ingenio:</span>
+            <span style="color:var(--muted);margin-left:4px">Barra de parque o marco reforzado. Sin carga externa hasta 10+ reps limpias.</span>
+          </div>
+        </div>
+        <div class="card">
+          <label class="field-label">Bitácora de sesión</label>
+          <textarea id="train-log-input" rows="3" placeholder="¿Qué entrenaste hoy? Series, sensaciones, PRs…"></textarea>
+          <button class="btn-ghost w-full mt-10" id="btn-save-train">Guardar entrada</button>
+          <div id="train-log-list" class="flex-col gap-8 mt-12"></div>
+        </div>
+      </div>
+
+      <!-- Biblioteca de ejercicios -->
+      <div class="tab-panel tab-hidden" id="ttab-biblioteca">
+        <!-- Estado de carga wger -->
+        <div id="wger-status-bar" class="card" style="display:none">
+          <div class="flex-row gap-10">
+            <span class="pulse-dot"></span>
+            <span style="font-size:11px;color:var(--accent)">Cargando ejercicios desde wger.de…</span>
+          </div>
+        </div>
+
+        <!-- Buscador -->
+        <div style="position:relative">
+          <input type="text" id="lib-search" placeholder="Busca ejercicio, músculo o categoría…" style="padding-left:36px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+
+        <!-- Filtros por categoría muscular -->
+        <div class="flex-row gap-6 flex-wrap" id="lib-cat-filters">
+          <button class="btn-ghost active" data-catid="" style="font-size:10px;padding:6px 11px">Todos</button>
+          <button class="btn-ghost" data-catid="11" style="font-size:10px;padding:6px 11px">Pecho</button>
+          <button class="btn-ghost" data-catid="8"  style="font-size:10px;padding:6px 11px">Brazos</button>
+          <button class="btn-ghost" data-catid="12" style="font-size:10px;padding:6px 11px">Espalda</button>
+          <button class="btn-ghost" data-catid="9"  style="font-size:10px;padding:6px 11px">Piernas</button>
+          <button class="btn-ghost" data-catid="13" style="font-size:10px;padding:6px 11px">Hombros</button>
+          <button class="btn-ghost" data-catid="10" style="font-size:10px;padding:6px 11px">Abdomen</button>
+          <button class="btn-ghost" data-catid="14" style="font-size:10px;padding:6px 11px">Pantorrillas</button>
+        </div>
+
+        <!-- Contador y results -->
+        <div class="flex-between">
+          <span style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)" id="lib-count">0 ejercicios</span>
+          <span style="font-size:10px;color:var(--dim)">Fuente: wger Workout Manager (CC-BY-SA)</span>
+        </div>
+
+        <!-- Lista de ejercicios -->
+        <div id="lib-list" class="flex-col gap-8"></div>
+
+        <!-- Cargar más -->
+        <button class="btn-ghost w-full" id="btn-lib-more" style="display:none">Cargar más →</button>
+
+        <!-- Vacío / loading -->
+        <div id="lib-empty" style="text-align:center;padding:32px 0;display:none">
+          <div style="font-size:28px;margin-bottom:8px">🔍</div>
+          <p style="font-size:12px;color:var(--muted)">Sin resultados para esa búsqueda.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── MÓDULO: NUTRICIÓN ─── -->
+    <div class="modcontent hidden" id="mod-nutri">
+      <div class="flex-between">
+        <div><span class="eyebrow">Premium Engine</span><h2 class="fb" style="font-size:28px;line-height:1">NUTRICIÓN</h2></div>
+        <span class="tag tag-green">v4</span>
+      </div>
+      <div class="flex-row gap-8" id="nutri-subtabs">
+        <button class="btn-ghost active" data-ntab="inicio">Inicio</button>
+        <button class="btn-ghost" data-ntab="despensa">Despensa</button>
+        <button class="btn-ghost" data-ntab="recetas">Recetas</button>
+      </div>
+
+      <!-- Nutrición: Inicio -->
+      <div class="tab-panel" id="ntab-inicio">
+        <div class="card">
+          <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:12px">Requerimiento calibrado</span>
+          <div class="grid-3 gap-8">
+            <div class="metric"><div class="val" id="n-kcal">–</div><div class="lbl">Kcal</div></div>
+            <div class="metric"><div class="val text-accent" id="n-prot">–</div><div class="lbl">Proteína</div></div>
+            <div class="metric"><div class="val" style="color:var(--amber)" id="n-carbs">–</div><div class="lbl">Carbos</div></div>
+          </div>
+        </div>
+        <p class="fi" style="font-size:13px;color:var(--muted);line-height:1.6">El módulo no impone dietas cerradas. Optimiza lo que ya comes mediante ajustes mínimos — sin restricción rígida, sin ansiedad alimentaria.</p>
+        <div class="card">
+          <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:10px">Auditoría rápida de hoy</span>
+          <div class="flex-col gap-8" id="audit-checks"></div>
+        </div>
+        <div>
+          <label class="field-label">Registra qué comiste hoy</label>
+          <textarea id="nutri-log-input" rows="3" placeholder="Ej: desayuno pan con palta, almuerzo arroz con pollo..."></textarea>
+          <button class="btn-ghost w-full mt-10" id="btn-save-nutri">Guardar registro</button>
+          <div id="nutrition-log-list" class="flex-col gap-8 mt-12"></div>
+        </div>
+      </div>
+
+      <!-- Nutrición: Despensa -->
+      <div class="tab-panel tab-hidden" id="ntab-despensa">
+        <div style="background:var(--s1);border:1px dashed var(--accent);border-radius:var(--radius-lg);padding:20px;text-align:center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" style="margin:0 auto 10px;display:block"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <p style="font-size:12px;color:var(--text);margin-bottom:4px">¿Fuiste al mercado o supermercado?</p>
+          <p style="font-size:11px;color:var(--muted);margin-bottom:14px">Sube la foto del ticket — la IA extrae y clasifica los ingredientes.</p>
+          <label style="display:inline-block;background:var(--accent);color:#0C0C0A;font-family:var(--font-display);font-size:15px;letter-spacing:.06em;padding:10px 20px;border-radius:var(--radius-md);cursor:pointer">
+            Escanear Ticket
+            <input type="file" accept="image/*" capture="environment" style="display:none" id="ticket-input">
+          </label>
+        </div>
+        <div id="pantry-loader" style="display:none" class="card">
+          <div class="flex-row gap-10"><span class="pulse-dot"></span><span style="font-size:12px;color:var(--accent)">Leyendo tu ticket de compra…</span></div>
+          <div class="flex-col gap-8 mt-12"><div class="skel" style="height:12px;width:80%"></div><div class="skel" style="height:12px;width:60%"></div><div class="skel" style="height:12px;width:70%"></div></div>
+        </div>
+        <div>
+          <div class="flex-between mb-10"><span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Inventario actual</span><span class="n-badge" id="pantry-count">0 ítems</span></div>
+          <div id="pantry-list" class="flex-col gap-8"></div>
+        </div>
+      </div>
+
+      <!-- Nutrición: Recetas -->
+      <div class="tab-panel tab-hidden" id="ntab-recetas">
+        <button class="btn-primary" style="font-size:16px" id="btn-gen-recipes">¿Qué cocino hoy? →</button>
+        <div id="recetas-loader" style="display:none" class="card">
+          <div class="flex-row gap-10 mb-12"><span class="pulse-dot"></span><span style="font-size:12px;color:var(--accent)">Buscando recetas que encajen contigo…</span></div>
+          <div class="flex-col gap-8"><div class="skel" style="height:80px;border-radius:12px"></div><div class="skel" style="height:80px;border-radius:12px"></div></div>
+        </div>
+        <div id="recetas-list" class="flex-col gap-12"></div>
+      </div>
+    </div>
+
+    <!-- ─── MÓDULO: MINDSET ─── -->
+    <div class="modcontent hidden" id="mod-mindset">
+      <div class="flex-between">
+        <div><span class="eyebrow" style="color:var(--danger)">Psicología del Rendimiento</span><h2 class="fb" style="font-size:28px;line-height:1">MINDSET</h2></div>
+        <span class="tag tag-red">Ψ</span>
+      </div>
+      <div class="card" id="quote-card">
+        <div class="flex-between mb-12"><span class="tag tag-red" id="quote-tag">Estoicismo</span><button id="btn-rotate-quote" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;letter-spacing:.06em;text-transform:uppercase">Rotar →</button></div>
+        <div class="blockquote" style="border-left-color:var(--danger)"><p id="quote-text"></p><footer id="quote-author"></footer></div>
+      </div>
+      <div class="flex-row gap-8" id="mind-subtabs">
+        <button class="btn-ghost active" data-mtab="chat">Coach IA</button>
+        <button class="btn-ghost" data-mtab="diario">Diario</button>
+        <button class="btn-ghost" data-mtab="protocolos">Protocolos</button>
+      </div>
+      <!-- Chat cognitivo -->
+      <div class="tab-panel" id="mtab-chat">
+        <div style="background:var(--s1);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+          <div id="mind-messages" style="padding:14px;display:flex;flex-direction:column;gap:10px;min-height:160px;max-height:260px;overflow-y:auto">
+            <div class="msg-bot fadein">Hola. Soy tu asistente cognitivo. Puedo ayudarte con motivación, adherencia, gestión del estrés universitario-atlético y filosofía del rendimiento. ¿Cómo estás hoy?</div>
+          </div>
+          <div style="padding:10px;border-top:1px solid var(--border);display:flex;gap:8px;background:var(--bg)">
+            <input type="text" id="mind-input" placeholder="Escribe aquí…" style="border-radius:10px;font-size:12px">
+            <button id="btn-send-mind" style="background:var(--accent);border:none;color:#0C0C0A;width:36px;height:36px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diario -->
+      <div class="tab-panel tab-hidden" id="mtab-diario">
+        <textarea id="diario-input" rows="4" placeholder="¿Cómo te sientes hoy? ¿Qué fue bien? ¿Qué fue difícil?"></textarea>
+        <button class="btn-ghost w-full" id="btn-save-diario">Guardar entrada →</button>
+        <div id="diario-list" class="flex-col gap-8"></div>
+      </div>
+
+      <!-- Protocolos — subcategorizados por objetivo -->
+      <div class="tab-panel tab-hidden" id="mtab-protocolos">
+
+        <!-- Filtros de subcategoría -->
+        <div class="flex-row gap-6 flex-wrap" id="proto-filters">
+          <button class="btn-ghost active" data-proto="rendimiento" onclick="switchProtoFilter(this)">Rendimiento</button>
+          <button class="btn-ghost" data-proto="visualizacion" onclick="switchProtoFilter(this)">Visualización</button>
+          <button class="btn-ghost" data-proto="relajacion" onclick="switchProtoFilter(this)">Relajación</button>
+          <button class="btn-ghost" data-proto="mindfulness" onclick="switchProtoFilter(this)">Mindfulness</button>
+        </div>
+
+        <!-- Rendimiento deportivo -->
+        <div id="proto-rendimiento" class="flex-col gap-10">
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Box Breathing 4-4-4-4</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Inhala 4 seg → retén 4 seg → exhala 4 seg → retén 4 seg. 4 ciclos antes de sesión intensa o competencia. Activa el sistema parasimpático y reduce el cortisol basal.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Activación Pre-Competencia</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">10 min antes: 2 min de respiración activadora (inhala rápido, exhala corto), seguido de movimiento dinámico progresivo. Objetivo: activar el sistema simpático de forma controlada sin llegar al agotamiento prematuro.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Dicotomía del Control (Epicteto)</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Antes de competencia o evaluación difícil: di en voz alta o escribe: <span style="color:var(--text);font-style:italic">"Lo que controlo hoy es ___. Lo que no controlo y acepto es ___."</span> Separa esfuerzo de resultado.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Check-in de 3 preguntas</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Antes de cada sesión: <span style="color:var(--text)">①</span> ¿Cómo está mi energía ahora (1-10)? <span style="color:var(--text)">②</span> ¿Hay algo mental que afecte mi entreno? <span style="color:var(--text)">③</span> ¿Qué es lo único que quiero lograr hoy, aunque sea mínimo? Autorregula expectativas según recursos disponibles.</p>
+          </div>
+        </div>
+
+        <!-- Visualización -->
+        <div id="proto-visualizacion" class="flex-col gap-10" style="display:none">
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Visualización Motora Pre-Sesión</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">5 min antes de entrenar: cierra los ojos y visualiza el movimiento que vas a trabajar — posición de manos, tensión muscular específica, ritmo, sensación kinestésica. La corteza motora activa los mismos patrones que la ejecución real.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Ensayo Mental de Competencia</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">La noche anterior a una competencia: visualiza el evento completo — entrada, calentamiento, el momento de máximo esfuerzo, y el final exitoso. Incluye sensaciones físicas (temperatura, tensión muscular, respiración). Repite 2-3 veces.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Visualización de Progresión Técnica</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Para habilidades de calistenia en desarrollo (planche, front lever, handstand): visualiza el movimiento perfecto en detalle durante 3-5 min antes de practicarlo. Reduce la brecha entre el modelo motor deseado y la ejecución real.</p>
+          </div>
+        </div>
+
+        <!-- Relajación -->
+        <div id="proto-relajacion" class="flex-col gap-10" style="display:none">
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Recuperación Post-Entreno (5-7-8)</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Al terminar la sesión: inhala 5 seg → retén 7 seg → exhala 8 seg. 4-6 ciclos. Activa la recuperación parasimpática y acelera la reducción de cortisol post-esfuerzo. Ideal combinarlo con la vuelta a la calma de movilidad.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Relajación Muscular Progresiva</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Tumbado: contrae cada grupo muscular 5 seg, luego suéltalo completamente 30 seg. Empieza por los pies y sube hasta la cara. Duración total: 15-20 min. Especialmente útil la noche previa a competencia o en semanas de carga alta.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Protocolo de Sueño Atlético</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">El sueño tiene prioridad sobre cualquier sesión extra. Señales de deuda de sueño: fatiga mental persistente, pérdida de motivación, rendimiento en caída. Estrategia: 20 min de siesta antes de las 15:00 no afecta el sueño nocturno y restaura el rendimiento cognitivo-motor.</p>
+          </div>
+        </div>
+
+        <!-- Mindfulness -->
+        <div id="proto-mindfulness" class="flex-col gap-10" style="display:none">
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Body Scan Atlético (10 min)</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Sentado o tumbado: recorre mentalmente cada parte del cuerpo de pies a cabeza sin juzgar ni cambiar nada — solo observar. ¿Hay tensión? ¿Dolor? ¿Diferencia entre lados? Entrena la conciencia propioceptiva que mejora la técnica de entrenamiento.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Atención Plena al Movimiento</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Durante el calentamiento: ejecuta cada movimiento con atención total — velocidad reducida, sensación de cada músculo, conciencia de la respiración. Sin teléfono, sin música los primeros 10 min. Mejora la calidad de la conexión neuromuscular.</p>
+          </div>
+          <div class="card">
+            <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:8px">Diálogo Interno Observacional</span>
+            <p style="font-size:12px;color:var(--muted);line-height:1.6">Cuando aparezca un pensamiento negativo durante el entreno (<span style="color:var(--text);font-style:italic">"no puedo", "esto es demasiado"</span>): obsévalo como si fuera una nube pasando — nómbralo ("ahí está el pensamiento de que no puedo") sin fusionarte con él. No lo pelearías, no lo eliminas: lo dejas pasar.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ─── MÓDULO: INGENIO ─── -->
+    <div class="modcontent hidden" id="mod-ingenio">
+      <div class="flex-between">
+        <div><span class="eyebrow" style="color:var(--amber)">Sin dependencia de infraestructura</span><h2 class="fb" style="font-size:28px;line-height:1">INGENIO</h2></div>
+        <span class="tag tag-amber">DIY</span>
+      </div>
+      <p class="fi" style="font-size:14px;color:var(--muted);line-height:1.5">Equivalencia funcional: importa qué función biomecánica cumple el objeto, no cómo se ve.</p>
+      <div style="position:relative">
+        <input type="text" id="equip-search" placeholder="Busca: mancuernas, barra, anillas…" style="padding-left:36px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </div>
+      <div class="flex-row gap-6 flex-wrap" id="equip-filters"></div>
+      <div id="equip-list" class="flex-col gap-8"></div>
+    </div>
+
+    <!-- Tab bar -->
+    <nav class="tabbar" id="tabbar">
+      <button class="tab-btn active" data-mod="panel">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Panel</span>
+      </button>
+      <button class="tab-btn" data-mod="entrena">
+        <svg viewBox="0 0 24 24"><path d="M6 3v12M18 9v12M2 9h4M14 3h4M2 15h4M14 15h4"/></svg>
+        <span>Entrena</span>
+      </button>
+      <button class="tab-btn" data-mod="nutri">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10c0 4-2.5 7.5-6 9"/><path d="M12 2a10 10 0 0 0-10 10c0 5.5 4.5 10 10 10"/><path d="M12 6v6l4 2"/></svg>
+        <span>Nutrición</span>
+      </button>
+      <button class="tab-btn" data-mod="mindset">
+        <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+        <span>Mindset</span>
+      </button>
+      <button class="tab-btn" data-mod="ingenio">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+        <span>Ingenio</span>
+      </button>
+    </nav>
+
+    <!-- Chat FAB -->
+    <button class="chat-fab" id="chat-fab" aria-label="Abrir asistente">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </button>
+
+    <!-- Chat panel global -->
+    <div class="chat-panel" id="chat-panel">
+      <div style="padding:12px 14px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div class="flex-row gap-8"><span class="pulse-dot"></span><span class="fb" style="font-size:14px;letter-spacing:.04em">ASISTENTE<span style="color:var(--accent)">·ECO</span></span></div>
+        <button id="btn-close-chat" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1">×</button>
+      </div>
+      <div id="chat-msgs" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;min-height:100px">
+        <div class="msg-bot">Pregúntame sobre el sistema, sustituciones de equipo, tu rutina, nutrición o cualquier módulo. Tengo acceso al contexto del módulo activo y a tu perfil.</div>
+      </div>
+      <div style="padding:10px;border-top:1px solid var(--border);display:flex;gap:8px;background:var(--bg)">
+        <input type="text" id="chat-input" placeholder="Escribe aquí…" style="border-radius:10px;font-size:12px">
+        <button id="btn-send-chat" style="background:var(--accent);border:none;color:#0C0C0A;width:36px;height:36px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- end s-dash -->
+
+  <!-- ══════════════════════════════════════════════
+       MODAL: PLAN DEL DÍA
+  ══════════════════════════════════════════════ -->
+  <div id="day-modal-overlay" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:60;backdrop-filter:blur(2px)" onclick="closeDayModal()"></div>
+
+  <div id="day-modal" style="
+    position:absolute;bottom:0;left:0;right:0;z-index:61;
+    background:var(--s1);border-top:1px solid var(--border);
+    border-radius:20px 20px 0 0;
+    max-height:88%;display:none;flex-direction:column;
+    transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)
+  ">
+    <!-- Handle -->
+    <div style="padding:12px 0 4px;display:flex;justify-content:center;flex-shrink:0">
+      <div style="width:36px;height:3px;border-radius:2px;background:var(--border2)"></div>
+    </div>
+
+    <!-- Header del modal -->
+    <div style="padding:10px 18px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0">
+      <div>
+        <div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:2px" id="modal-day-label">LUNES</div>
+        <h2 class="fb" style="font-size:24px;line-height:1" id="modal-day-focus">Atletismo + Movilidad</h2>
+      </div>
+      <button onclick="closeDayModal()" style="background:var(--s2);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0">×</button>
+    </div>
+
+    <!-- Contenido scrollable -->
+    <div id="day-modal-body" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px">
+      <!-- Se rellena dinámicamente -->
+    </div>
+  </div>
+
+</div><!-- end app-shell -->
+
+<style>
+/* Week rows clickeables */
+.week-row {
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background .15s;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin: 0 -6px;
+}
+.week-row:hover { background: var(--s2); }
+.week-row:active { background: var(--s3); }
+
+/* Bloque de sesión en modal */
+.session-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.session-block-head {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.session-block-body {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Fila de ejercicio */
+.exercise-row {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.exercise-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.exercise-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.exercise-badge {
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-family: var(--font-mono);
+}
+.exercise-tip {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+.exercise-equiv {
+  font-size: 10px;
+  color: var(--amber);
+  margin-top: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+/* Skeleton modal */
+.modal-skel-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0;
+}
+</style>
+
+<script type="module" src="/src/js/app.js"></script>
+</body>
+</html>

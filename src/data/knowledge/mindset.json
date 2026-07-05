@@ -1,0 +1,53 @@
+{
+  "principio": "La psicología del rendimiento es una capacidad entrenable, no un rasgo fijo. El sistema integra filosofía estoica, técnicas cognitivo-conductuales aplicadas al deporte y protocolos de regulación del sistema nervioso.",
+  "citas": [
+    {"texto": "\"Te conviertes en aquello a lo que le prestas atención. Si no eliges tus propios pensamientos, otros los elegirán por ti.\"", "autor": "Epicteto, Discursos", "tema": "Estoicismo"},
+    {"texto": "\"No es que el tiempo sea corto, sino que lo desperdiciamos.\"", "autor": "Séneca, De Brevitate Vitae", "tema": "Estoicismo"},
+    {"texto": "\"La voluntad de ganar no importa si no tienes la voluntad de prepararte para ganar.\"", "autor": "Vince Lombardi", "tema": "Competencia"},
+    {"texto": "\"No cuentes los días. Haz que los días cuenten.\"", "autor": "Muhammad Ali", "tema": "Mentalidad"},
+    {"texto": "\"Être fort pour être utile.\" (Ser fuerte para ser útil.)", "autor": "Georges Hébert, 1912", "tema": "Método Natural"},
+    {"texto": "\"La disciplina es elegir entre lo que quieres ahora y lo que quieres más.\"", "autor": "Abraham Lincoln", "tema": "Disciplina"},
+    {"texto": "\"Lo que no me destruye, me hace más fuerte.\"", "autor": "Friedrich Nietzsche", "tema": "Resiliencia"},
+    {"texto": "\"No controlo el resultado, controlo el esfuerzo y la atención.\"", "autor": "Reformulación estoica moderna", "tema": "Control"},
+    {"texto": "\"El dolor que sientes hoy será la fuerza que sientes mañana.\"", "autor": "Arnold Schwarzenegger", "tema": "Rendimiento"},
+    {"texto": "\"Un hombre que domina sus pasiones es rey; un hombre dominado por ellas es esclavo.\"", "autor": "Marco Aurelio, Meditaciones", "tema": "Estoicismo"}
+  ],
+  "protocolos": {
+    "box_breathing": {
+      "nombre": "Respiración Box 4-4-4-4",
+      "descripcion": "Inhala 4 seg → retén 4 seg → exhala 4 seg → retén 4 seg. 4 ciclos.",
+      "cuando": "Antes de sesión intensa, competencia, examen, situación de estrés agudo.",
+      "mecanismo": "Activa el sistema nervioso parasimpático (freno vagal), reduce cortisol basal, mejora variabilidad de frecuencia cardiaca."
+    },
+    "visualizacion_motora": {
+      "nombre": "Visualización Motora Pre-sesión",
+      "descripcion": "5 min antes de entrenar: visualizar en detalle el movimiento que se va a trabajar — posición de manos, tensión muscular específica, ritmo, sensación kinestésica.",
+      "mecanismo": "La corteza motora activa los mismos patrones neuronales que la ejecución real. Mejora la sincronización neuromuscular antes de la carga.",
+      "aplicacion": "Especialmente útil para habilidades técnicas: planche, handstand, entrada de judo, movimiento de atletismo."
+    },
+    "reformulacion_estoica": {
+      "nombre": "Dicotomía del Control (Epicteto)",
+      "descripcion": "Antes de cualquier competencia o evaluación difícil: distinguir explícitamente qué está bajo tu control (esfuerzo, preparación, atención, actitud) y qué no (resultado, jueces, condiciones externas).",
+      "practica": "Escribe o di en voz alta: 'Lo que controlo hoy es ___. Lo que no controlo y acepto es ___.'",
+      "cuando": "Pre-competencia, días de evaluación académica, situaciones de alta incertidumbre."
+    },
+    "check_in_diario": {
+      "nombre": "Check-in de 3 preguntas",
+      "preguntas": [
+        "¿Cómo está mi energía ahora mismo (1-10)?",
+        "¿Hay algo mental que esté cargando y afecte mi entreno de hoy?",
+        "¿Qué es lo único que quiero lograr en esta sesión, aunque sea mínimo?"
+      ],
+      "proposito": "Conciencia del estado interno antes de entrenar. Autorregulación de expectativas según recursos disponibles."
+    }
+  },
+  "gestion_estres_universitario": {
+    "patron_comun": "El atleta-estudiante enfrenta competencia de recursos cognitivos entre estudio y rendimiento deportivo. La fatiga mental afecta la toma de decisiones en el deporte y la recuperación.",
+    "estrategias": [
+      "Periodizar el volumen de entrenamiento alrededor de períodos de exámenes (reducción programada, no abandono)",
+      "Distinguir 'días de mantenimiento' (mínimo viable para no perder adaptaciones) de 'días de desarrollo'",
+      "El sueño tiene prioridad sobre cualquier sesión extra de entrenamiento — no es negociable",
+      "La recuperación activa (caminata, movilidad ligera) el día post-examen resetea mejor que el reposo total"
+    ]
+  }
+}

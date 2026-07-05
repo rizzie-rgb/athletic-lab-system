@@ -1,0 +1,91 @@
+{
+  "sistema": "Sistema Híbrido de Athleticism - Inspirado en la Méthode Naturelle de Georges Hébert (1912): 'Être fort pour être utile'",
+  "principios": [
+    "Especificidad progresiva: todo ejercicio existe en un espectro entre general y específico",
+    "Sobrecarga progresiva sin carga externa: se manipula longitud de palanca, apoyo unilateral, tempo excéntrico, superficie inestable",
+    "Transferencia horizontal: cada capacidad entrenada debe transferirse a al menos otro dominio del sistema",
+    "Recuperación como variable activa: no es ausencia de entrenamiento, es una fase de adaptación",
+    "Máxima adaptabilidad: el sistema funciona con o sin gimnasio, con o sin equipamiento"
+  ],
+  "disciplinas": [
+    {
+      "nombre": "Calistenia",
+      "aporte": "Fuerza relativa mediante progresiones de palanca. Escalable sin equipamiento externo.",
+      "mecanismo": "Manipulación de brazo de palanca del propio cuerpo. A mayor extensión, mayor dificultad.",
+      "evidencia": "Refalo et al. (2022), Sports Medicine: la intensidad relativa importa más que el implemento. Kikuchi & Nakazato (2017): hipertrofia comparable entre push-ups y press de banca a volumen equiparado.",
+      "progresiones_empuje": ["Knee push-up → Push-up estándar → Push-up diamante → Pseudo-planche push-up → Archer push-up → One-arm push-up"],
+      "progresiones_tiron": ["Australian row → Pull-up asistida → Pull-up estricta → L-sit pull-up → Archer pull-up → One-arm pull-up"],
+      "habilidades_estaticas": ["Tuck L-sit → L-sit → Straddle L-sit", "Tuck front lever → Adv tuck → One-leg → Straddle → Full front lever", "Tuck planche → Adv tuck → Straddle → Full planche"]
+    },
+    {
+      "nombre": "Gimnasia - Anillas",
+      "aporte": "Estabilidad bajo inestabilidad extrema y control postural absoluto.",
+      "mecanismo": "Eliminación de estabilidad del entorno obliga activación constante de estabilizadores. Mayor activación EMG que equivalentes en superficies fijas.",
+      "evidencia": "NCBI PMC6888498: entrenamiento excéntrico en anillas produce +4.1% fuerza máxima en 4 semanas. PMC9028779: mayor activación de estabilizadores en anillas vs superficies fijas.",
+      "ejercicios_clave": ["Ring push-ups", "Ring dips", "Ring rows / inverted rows", "Ring support hold", "Muscle-up en anillas", "Ring L-sit"]
+    },
+    {
+      "nombre": "Escalada (adaptada sin pared)",
+      "aporte": "Fuerza de agarre, fuerza de dedos, control corporal tridimensional.",
+      "mecanismo": "Adaptación tendinosa progresiva. Los tendones responden a carga progresiva con adaptaciones estructurales lentas pero duraderas.",
+      "evidencia": "Sports Medicine Open (2024): protocolo Abrahangs (baja intensidad, larga duración) tan efectivo como máxima intensidad para fuerza de agarre. Combinación aditiva. Rock Prodigy Method: +21.5% fuerza de dedos en 4 semanas.",
+      "ejercicios_sin_pared": ["Dead hang pronado 3x15-30 seg", "Dead hang supinado", "Towel pull-ups (toalla en barra)", "Farmer walks con carga máxima", "Pelota de tenis: 3x20 apretones énfasis meñique y anular"],
+      "transferencia_combate": "El kumi-kata del judo se sostiene principalmente por meñique y anular. Agarre superior = control táctico desde primer contacto."
+    },
+    {
+      "nombre": "Parkour",
+      "aporte": "Explosividad, reactividad y locomoción multiplanar impredecible.",
+      "mecanismo": "Exposición a patrones de movimiento con cargas variables e impredecibles desafía fuerza, coordinación, orientación espacial y adaptabilidad simultáneamente.",
+      "evidencia": "PLOS ONE (2024): tic-tac mejora agilidad, potencia de salto y reactividad en atletas. IJCRT (2025): programa de 8 semanas produce mejoras significativas en capacidades psicomotoras. Descendiente directo de Méthode Naturelle de Hébert.",
+      "habilidades_extraibles": ["Saltos de precisión (potencia + control de aterrizaje)", "Cat leaps (fuerza explosiva de empuje + absorción de impacto)", "Climb-ups (tirón explosivo desde agarre en tensión)", "Breakfalls (fundamental para judo y lucha)"],
+      "transferencia": "Velocidad de primer paso, cambios de dirección, reflejos de caída - todos directamente aplicables a deportes de combate"
+    },
+    {
+      "nombre": "Movilidad / FRC",
+      "aporte": "Control articular activo en rangos extremos. Convierte rango pasivo en rango funcional.",
+      "mecanismo": "Functional Range Conditioning (Dr. Andreo Spina). CARs activan receptores propioceptivos. PAILs/RAILs convierten rango pasivo en activo mediante trabajo neurológico específico.",
+      "evidencia": "Journal of Sports Sciences (2024): entrenamiento de movilidad activa produce mejoras de rendimiento que el estiramiento estático pasivo no genera.",
+      "protocolo_cars": {
+        "descripcion": "Controlled Articular Rotations - rotar cada articulación en su rango máximo de forma activa y lenta",
+        "articulaciones": ["Cervical (3 círculos/lado)", "Hombro (3 rep/lado)", "Cadera (3 rep/lado)", "Muñeca (5 círculos/dirección)", "Tobillo (3 rep/lado)"],
+        "cuando": "Al inicio de toda sesión como calentamiento neuroarticular"
+      },
+      "protocolo_pails_rails": {
+        "descripcion": "PAILs: contracción isométrica progresiva en el final del rango (empujar hacia adentro del estiramiento). RAILs: contracción isométrica opuesta (intentar salir del rango activamente).",
+        "duracion": "Estiramiento pasivo 2 min → PAILs 10 seg creciente → RAILs 10 seg",
+        "aplicacion": "Cadera 90/90, isquiotibiales, extensión torácica, flexión dorsal de tobillo"
+      }
+    }
+  ],
+  "jerarquia_capacidades": {
+    "nivel_1_base": ["Fuerza relativa (umbral mínimo: 10 pull-ups, 20 dips, 1 pistol squat)", "Movilidad funcional (deep squat, hip hinge, overhead reach)", "Capacidad aeróbica Zona 2"],
+    "nivel_2_rendimiento": ["Fuerza máxima", "Hipertrofia funcional", "Explosividad y potencia (RFD)", "Fuerza de agarre", "Resistencia funcional 30-90 seg", "Coordinación inter e intramuscular"],
+    "nivel_3_alto_rendimiento": ["Planche, front lever (calistenia avanzada)", "Handstand, L-sit extendida", "Reactividad y elasticidad (ciclo estiramiento-acortamiento)", "Capacidad anaeróbica"]
+  },
+  "herramientas_programacion": {
+    "emom": "Every Minute On the Minute. Impone recuperación pasiva controlada. Permite trabajo técnico con fatiga parcial sin colapsar calidad. Ej: EMOM 10min alternando 3 pull-ups explosivas (impar) + 5 saltos de precisión (par).",
+    "circuitos": "Organizar por PATRÓN DE MOVIMIENTO, no por grupo muscular: empuje → tirón → pierna → core → locomoción. Cada patrón descansa mientras el siguiente trabaja.",
+    "isometria": "Dos roles: (1) desarrollo de habilidades estáticas (planche, front lever) - series de 3-10 seg, 5-6 series, máxima calidad. (2) PAILs/RAILs para movilidad activa en rangos limitantes.",
+    "periodizacion": "Macrociclo 12-16 semanas: 4 sem acumulación (volumen alto, variantes medias) → 4 sem intensificación (volumen bajo, progresiones avanzadas) → 2 sem descarga activa."
+  },
+  "estructura_sesion_hibrida": {
+    "fase1_descompresion": "15 min - CARs cervical, hombro, cadera, muñeca. Objetivo: activar propioceptores, lubricar articulaciones, recalibrar mapa motor.",
+    "fase2_activacion": "15 min - Control motor cuadrupedal, movimientos locomotores básicos, activación metabólica.",
+    "fase3_potencia": "15 min - Pliometría, saltos, elementos explosivos. Antes de fatiga acumulada para máxima calidad neuromuscular.",
+    "fase4_fuerza": "30 min - Superseries antagonistas empuje/tirón. Pseudo-planche push-up + Ring inverted rows. Ring dips + L-sit.",
+    "fase5_movilidad": "10 min - PAILs/RAILs aprovechando alta irrigación post-fuerza. Cadera 90/90, hombro, isquiotibiales."
+  },
+  "estandares_referencia": {
+    "pull_ups": {"principiante": "1-5", "intermedio": "6-12", "avanzado": "13-20", "elite": "20+"},
+    "dead_hang_seg": {"principiante": "<30", "intermedio": "30-60", "avanzado": "60-90", "elite": "90+"},
+    "salto_vertical_cm": {"principiante": "<30", "intermedio": "30-45", "avanzado": "45-60", "elite": "60+"},
+    "broad_jump_cm": {"principiante": "<180", "intermedio": "180-220", "avanzado": "220-260", "elite": "260+"},
+    "sprint_30m_seg": {"principiante": ">5.5", "intermedio": "4.8-5.5", "avanzado": "4.2-4.8", "elite": "<4.2"},
+    "pace_2km_min_km": {"principiante": ">6:30", "intermedio": "5:30-6:30", "avanzado": "4:30-5:30", "elite": "<4:30"}
+  },
+  "transferencia_disciplinas": {
+    "judo_lucha": "Fuerza relativa → proyecciones y resistencia a derribos. Agarre → control de kumi-kata. Estabilidad de anillas → tensión corporal difícil de desplazar en combate. Reactividad de parkour → velocidad de entrada.",
+    "breakdance_power_moves": "Planche push-ups → base para airflare. Hollow body → windmill. Fuerza de empuje en ángulos no convencionales + core en posiciones invertidas.",
+    "sanda_mma": "Potencia de cadera → golpeo. Estabilidad unilateral → golpear desde una pierna. Capacidad anaeróbica → duración de round. Movilidad activa → rangos disponibles para técnicas."
+  }
+}
