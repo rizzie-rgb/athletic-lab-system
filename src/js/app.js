@@ -878,69 +878,80 @@ function renderDayPlan(container, plan, color) {
   };
   const iColor = intensityColor[plan.intensidad] || 'var(--muted)';
 
+  const blockColors = {
+    'Calentamiento':     'var(--amber)',
+    'Vuelta a la calma': 'var(--blue)',
+    'Movilidad':         'var(--blue)',
+    'Enfriamiento':      'var(--blue)',
+  };
+
   // Meta-info
   let html = `
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <span class="tag" style="background:${color}18;color:${color};border:1px solid ${color}40">
-        ⏱ ${plan.duracion_total_min || '–'} min
-      </span>
-      <span class="tag" style="background:${iColor}18;color:${iColor};border:1px solid ${iColor}40">
-        ${plan.intensidad || 'moderada'}
-      </span>
-    </div>`;
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+      <span class="tag" style="background:${color}18;color:${color};border:1px solid ${color}40">⏱ ${plan.duracion_total_min || '–'} min</span>
+      <span class="tag" style="background:${iColor}18;color:${iColor};border:1px solid ${iColor}40">${plan.intensidad || 'moderada'}</span>
+    </div>
+    <p style="font-size:11px;color:var(--dim);font-family:var(--font-serif);font-style:italic">Toca cada bloque para ver los ejercicios.</p>`;
 
-  // Bloques
-  (plan.bloques || []).forEach(bloque => {
-    const blockColors = {
-      'Calentamiento':   { border: 'var(--amber)',  label: 'tag-amber' },
-      'Vuelta a la calma': { border: 'var(--blue)', label: 'tag-blue' },
-      'Movilidad':       { border: 'var(--blue)',   label: 'tag-blue' },
-    };
-    const bc = blockColors[bloque.nombre] || { border: color, label: 'tag-green' };
+  // Bloques colapsables
+  (plan.bloques || []).forEach((bloque, idx) => {
+    const bc = blockColors[bloque.nombre] || color;
+    const isFirst = idx === 0; // Calentamiento abre por defecto
+    const bodyId = `bloque-body-${idx}`;
 
-    html += `
-      <div class="session-block">
-        <div class="session-block-head">
-          <div>
-            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:${bc.border};margin-bottom:2px">${bloque.nombre}</div>
-            ${bloque.descripcion ? `<div style="font-size:11px;color:var(--muted)">${bloque.descripcion}</div>` : ''}
-          </div>
-          <span class="tag tag-dim">${bloque.duracion_min || '–'} min</span>
-        </div>
-        <div class="session-block-body">`;
-
+    // Ejercicios del bloque
+    let ejerciciosHtml = '';
     (bloque.ejercicios || []).forEach(ej => {
-      html += `
-          <div class="exercise-row">
-            <div class="exercise-name">${ej.nombre}</div>
-            <div class="exercise-meta">`;
+      ejerciciosHtml += `<div class="exercise-row">
+        <div class="exercise-name">${ej.nombre}</div>
+        <div class="exercise-meta">`;
 
       if (ej.series && ej.reps) {
-        html += `<span class="exercise-badge" style="background:${color}14;color:${color}">${ej.series} × ${ej.reps}</span>`;
+        ejerciciosHtml += `<span class="exercise-badge" style="background:${bc}14;color:${bc}">${ej.series} × ${ej.reps}</span>`;
       } else if (ej.reps) {
-        html += `<span class="exercise-badge" style="background:${color}14;color:${color}">${ej.reps}</span>`;
+        ejerciciosHtml += `<span class="exercise-badge" style="background:${bc}14;color:${bc}">${ej.reps}</span>`;
       }
       if (ej.descanso_seg && ej.descanso_seg > 0) {
-        html += `<span class="exercise-badge" style="background:var(--s2);color:var(--muted)">⏸ ${ej.descanso_seg}s descanso</span>`;
+        ejerciciosHtml += `<span class="exercise-badge" style="background:var(--s2);color:var(--muted)">⏸ ${ej.descanso_seg}s</span>`;
       }
-
-      html += `</div>`;
+      ejerciciosHtml += `</div>`;
 
       if (ej.tecnica) {
-        html += `<div class="exercise-tip">${ej.tecnica}</div>`;
+        ejerciciosHtml += `<div class="exercise-tip">${ej.tecnica}</div>`;
       }
       if (ej.equivalencia_sin_equipo) {
-        html += `
-            <div class="exercise-equiv">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.5" style="flex-shrink:0;margin-top:1px"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-              <span style="color:var(--amber)">Sin equipo:</span>
-              <span style="color:var(--muted);margin-left:2px">${ej.equivalencia_sin_equipo}</span>
-            </div>`;
+        ejerciciosHtml += `<div class="exercise-equiv">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.5" style="flex-shrink:0;margin-top:1px"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          <span style="color:var(--amber)">Sin equipo:</span>
+          <span style="color:var(--muted);margin-left:2px">${ej.equivalencia_sin_equipo}</span>
+        </div>`;
       }
-      html += `</div>`;
+      ejerciciosHtml += `</div>`;
     });
 
-    html += `</div></div>`;
+    html += `
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden">
+        <!-- Header colapsable -->
+        <div onclick="toggleBloque('${bodyId}', this)"
+             style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;transition:background .15s"
+             onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background='transparent'">
+          <div>
+            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:${bc};margin-bottom:2px">${bloque.nombre}</div>
+            ${bloque.descripcion ? `<div style="font-size:11px;color:var(--muted)">${bloque.descripcion}</div>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+            <span class="tag tag-dim">${bloque.duracion_min || '–'} min</span>
+            <svg id="arrow-${bodyId}" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${bc}" stroke-width="2"
+                 style="transition:transform .25s;transform:${isFirst ? 'rotate(180deg)' : 'rotate(0deg)'}">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </div>
+        </div>
+        <!-- Cuerpo colapsable -->
+        <div id="${bodyId}" style="display:${isFirst ? 'flex' : 'none'};flex-direction:column;gap:10px;padding:0 14px 14px;border-top:1px solid var(--border)">
+          ${ejerciciosHtml || '<div style="font-size:11px;color:var(--dim);padding:8px 0">Sin ejercicios para este bloque.</div>'}
+        </div>
+      </div>`;
   });
 
   // Nota final
@@ -952,7 +963,6 @@ function renderDayPlan(container, plan, color) {
       </div>`;
   }
 
-  // Botón regenerar (invalida cache)
   html += `
     <button class="btn-ghost w-full" onclick="regenerateDayPlan('${plan.dia || ''}',this)">
       Regenerar rutina →
@@ -960,6 +970,14 @@ function renderDayPlan(container, plan, color) {
 
   container.innerHTML = html;
 }
+
+window.toggleBloque = function(bodyId, headerEl) {
+  const body  = document.getElementById(bodyId);
+  const arrow = document.getElementById('arrow-' + bodyId);
+  const open  = body.style.display === 'flex';
+  body.style.display  = open ? 'none' : 'flex';
+  if (arrow) arrow.style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+};
 
 window.regenerateDayPlan = function(day, btn) {
   const w = WEEK.find(w => w.day === day || w.key === day);
