@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadPersistedData();
   bindEvents();
   renderQuote();
-  renderDiscs();
+  // renderDiscs();
   renderEquip();
   renderAuditChecks();
   renderWeek();
