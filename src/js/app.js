@@ -135,7 +135,7 @@ function loadPersistedData() {
 // ═══════════════════════════════════════════════════════════
 // NAVEGACIÓN
 // ═══════════════════════════════════════════════════════════
-function goTo(screenId) {
+window.goTo = function(screenId) {
   document.querySelectorAll('.screen').forEach(s => {
     s.classList.add('hidden');
   });
