@@ -51,8 +51,10 @@ const WEEK = [
   { key: 'dom', day: 'Domingo',  label: 'DOM', focus: 'Descanso completo — recuperación activa ligera',     color: 'var(--dim)' },
 ];
 
-// Cache de planes generados (evita regenerar si ya existe)
-const dayPlanCache = {};
+// Cache de planes generados con persistencia diaria
+let dayPlanCache = {};
+let currentDayPlan = null;
+let currentDayColor = null;
 
 const EQUIP = [
   { cat: 'Carga', orig: 'Mancuernas', sub: 'Mochila cargada con libros / botellas / arena', why: 'Carga externa progresiva' },
@@ -108,10 +110,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadPersistedData() {
   profile       = storeGet(KEYS.PROFILE)       || null;
-  pantry        = storeGet(KEYS.PANTRY)         || [];
-  trainLog      = storeGet(KEYS.TRAIN_LOG)      || [];
-  nutritionLog  = storeGet(KEYS.NUTRITION_LOG)  || [];
-  diarioEntries = storeGet(KEYS.DIARIO)         || [];
+  pantry        = storeGet(KEYS.PANTRY)        || [];
+  trainLog      = storeGet(KEYS.TRAIN_LOG)     || [];
+  nutritionLog  = storeGet(KEYS.NUTRITION_LOG) || [];
+  diarioEntries = storeGet(KEYS.DIARIO)        || [];
+
+  // --- NUEVA LÓGICA DE CACHÉ PERSISTENTE ---
+  const todayStr = new Date().toLocaleDateString('es-PE');
+  const savedPlans = storeGet('ATH_DAY_PLANS') || {};
+  if (savedPlans.date === todayStr) {
+    dayPlanCache = savedPlans.plans || {}; // Si es hoy, recupera las rutinas
+  } else {
+    dayPlanCache = {}; // Si es un nuevo día, limpia la memoria
+    storeSet('ATH_DAY_PLANS', { date: todayStr, plans: {} });
+  }
+  // -----------------------------------------
 
   renderPantry();
   renderTrainLog();
@@ -806,177 +819,143 @@ function renderWeek() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// MODAL DEL DÍA
+// NAVEGACIÓN DE RUTINAS (PANTALLA 2 Y 3)
 // ═══════════════════════════════════════════════════════════
+
 window.openDayModal = async function(key, day, label, focus, color) {
-  const overlay = document.getElementById('day-modal-overlay');
-  const modal   = document.getElementById('day-modal');
-  const body    = document.getElementById('day-modal-body');
+  // 1. Navegación inmediata a Pantalla 2 (feedback visual instantáneo)
+  goTo('s-day-blocks');
+  
+  document.getElementById('sdb-day-label').textContent = label;
+  document.getElementById('sdb-day-label').style.color = color;
+  document.getElementById('sdb-day-focus').textContent = focus;
+  
+  const metaEl = document.getElementById('sdb-meta');
+  const blocksEl = document.getElementById('sdb-blocks');
+  
+  metaEl.innerHTML = '';
+  blocksEl.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:12px">
+      <span class="pulse-dot" style="width:12px;height:12px;background:${color}"></span>
+      <p style="font-size:12px;color:var(--muted)">El Coach IA está programando tu sesión...</p>
+    </div>
+  `;
 
-  // Actualizar cabecera
-  document.getElementById('modal-day-label').textContent = label;
-  document.getElementById('modal-day-label').style.color  = color;
-  document.getElementById('modal-day-focus').textContent  = focus;
+  try {
+    let plan = dayPlanCache[key];
+    if (!plan) {
+      // Si no hay caché, llama a la IA y guárdalo persistente
+      plan = await getDayPlan(day, focus, profile);
+      dayPlanCache[key] = plan;
+      storeSet('ATH_DAY_PLANS', { date: new Date().toLocaleDateString('es-PE'), plans: dayPlanCache });
+    }
+    
+    currentDayPlan = plan;
+    currentDayColor = color;
+    renderDayBlocks(plan, color);
+    
+  } catch (err) {
+    blocksEl.innerHTML = `
+      <div style="background:var(--bg);border:1px solid var(--danger);border-radius:12px;padding:14px;font-size:12px;color:var(--danger)">
+        Error al generar la rutina: ${err.message}
+      </div>
+    `;
+  }
+};
 
-  // Mostrar overlay + modal con animación
-  overlay.style.display = 'block';
-  modal.style.display   = 'flex';
-  requestAnimationFrame(() => {
-    modal.style.transform = 'translateY(0)';
-  });
+window.renderDayBlocks = function(plan, color) {
+  const intensityColor = { 'alta': 'var(--danger)', 'moderada': 'var(--amber)', 'baja': 'var(--accent)', 'recuperación': 'var(--blue)' };
+  const iColor = intensityColor[plan.intensidad?.toLowerCase()] || 'var(--muted)';
+  
+  document.getElementById('sdb-meta').innerHTML = `
+    <span class="tag" style="background:${color}18;color:${color};border:1px solid ${color}40">⏱ ${plan.duracion_total_min || '–'} min</span>
+    <span class="tag" style="background:${iColor}18;color:${iColor};border:1px solid ${iColor}40">${plan.intensidad || 'moderada'}</span>
+  `;
 
-  // Si ya está en cache, renderizar y salir
-  if (dayPlanCache[key]) {
-    renderDayPlan(body, dayPlanCache[key], color);
+  const blocksEl = document.getElementById('sdb-blocks');
+  if (!plan.bloques || plan.bloques.length === 0) {
+    blocksEl.innerHTML = '<p style="font-size:12px;color:var(--dim)">Sin bloques de entrenamiento.</p>';
     return;
   }
 
-  // Skeleton loader
-  body.innerHTML = `
-    <div class="modal-skel-wrap">
-      <div class="skel" style="height:14px;width:60%"></div>
-      <div class="skel" style="height:80px;border-radius:12px"></div>
-      <div class="skel" style="height:14px;width:40%"></div>
-      <div class="skel" style="height:100px;border-radius:12px"></div>
-      <div class="skel" style="height:100px;border-radius:12px"></div>
-      <div class="skel" style="height:80px;border-radius:12px"></div>
-      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:4px;font-family:var(--font-serif);font-style:italic">
-        Generando tu rutina personalizada…
-      </p>
-    </div>`;
-
-  try {
-    const plan = await getDayPlan(day, focus, profile);
-    dayPlanCache[key] = plan;
-    renderDayPlan(body, plan, color);
-  } catch (err) {
-    body.innerHTML = `
-      <div style="background:var(--bg);border:1px solid var(--danger);border-radius:12px;padding:14px;font-size:12px;color:var(--danger)">
-        Error al generar la rutina: ${err.message}
-        <br><br>
-        <span style="color:var(--muted)">Verifica que el servidor esté corriendo con <code>npm start</code> y que la clave de OpenAI esté configurada en server/.env</span>
-      </div>`;
-  }
-};
-
-window.closeDayModal = function() {
-  const modal   = document.getElementById('day-modal');
-  const overlay = document.getElementById('day-modal-overlay');
-  modal.style.transform = 'translateY(100%)';
-  setTimeout(() => {
-    modal.style.display   = 'none';
-    overlay.style.display = 'none';
-  }, 350);
-};
-
-function renderDayPlan(container, plan, color) {
-  const intensityColor = {
-    'alta': 'var(--danger)',
-    'moderada': 'var(--amber)',
-    'baja': 'var(--accent)',
-    'recuperación': 'var(--blue)',
-  };
-  const iColor = intensityColor[plan.intensidad] || 'var(--muted)';
-
-  const blockColors = {
-    'Calentamiento':     'var(--amber)',
-    'Vuelta a la calma': 'var(--blue)',
-    'Movilidad':         'var(--blue)',
-    'Enfriamiento':      'var(--blue)',
-  };
-
-  // Meta-info
-  let html = `
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-      <span class="tag" style="background:${color}18;color:${color};border:1px solid ${color}40">⏱ ${plan.duracion_total_min || '–'} min</span>
-      <span class="tag" style="background:${iColor}18;color:${iColor};border:1px solid ${iColor}40">${plan.intensidad || 'moderada'}</span>
+  // Cards de cada bloque
+  let html = plan.bloques.map((b, idx) => `
+    <div onclick="openBlock(${idx})" style="background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s" onmouseover="this.style.background='var(--s1)'" onmouseout="this.style.background='var(--bg)'">
+      <div>
+        <h3 class="fb" style="font-size:18px;line-height:1;margin-bottom:4px">${b.nombre}</h3>
+        <p style="font-size:11px;color:var(--muted)">⏱ ${b.duracion_min || 0} min • ${b.ejercicios?.length || 0} ejercicios</p>
+      </div>
+      <div style="color:var(--muted)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
     </div>
-    <p style="font-size:11px;color:var(--dim);font-family:var(--font-serif);font-style:italic">Toca cada bloque para ver los ejercicios.</p>`;
+  `).join('');
 
-  // Bloques colapsables
-  (plan.bloques || []).forEach((bloque, idx) => {
-    const bc = blockColors[bloque.nombre] || color;
-    const isFirst = idx === 0; // Calentamiento abre por defecto
-    const bodyId = `bloque-body-${idx}`;
-
-    // Ejercicios del bloque
-    let ejerciciosHtml = '';
-    (bloque.ejercicios || []).forEach(ej => {
-      ejerciciosHtml += `<div class="exercise-row">
-        <div class="exercise-name">${ej.nombre}</div>
-        <div class="exercise-meta">`;
-
-      if (ej.series && ej.reps) {
-        ejerciciosHtml += `<span class="exercise-badge" style="background:${bc}14;color:${bc}">${ej.series} × ${ej.reps}</span>`;
-      } else if (ej.reps) {
-        ejerciciosHtml += `<span class="exercise-badge" style="background:${bc}14;color:${bc}">${ej.reps}</span>`;
-      }
-      if (ej.descanso_seg && ej.descanso_seg > 0) {
-        ejerciciosHtml += `<span class="exercise-badge" style="background:var(--s2);color:var(--muted)">⏸ ${ej.descanso_seg}s</span>`;
-      }
-      ejerciciosHtml += `</div>`;
-
-      if (ej.tecnica) {
-        ejerciciosHtml += `<div class="exercise-tip">${ej.tecnica}</div>`;
-      }
-      if (ej.equivalencia_sin_equipo) {
-        ejerciciosHtml += `<div class="exercise-equiv">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.5" style="flex-shrink:0;margin-top:1px"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-          <span style="color:var(--amber)">Sin equipo:</span>
-          <span style="color:var(--muted);margin-left:2px">${ej.equivalencia_sin_equipo}</span>
-        </div>`;
-      }
-      ejerciciosHtml += `</div>`;
-    });
-
-    html += `
-      <div style="background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden">
-        <!-- Header colapsable -->
-        <div onclick="toggleBloque('${bodyId}', this)"
-             style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;transition:background .15s"
-             onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background='transparent'">
-          <div>
-            <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:${bc};margin-bottom:2px">${bloque.nombre}</div>
-            ${bloque.descripcion ? `<div style="font-size:11px;color:var(--muted)">${bloque.descripcion}</div>` : ''}
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-            <span class="tag tag-dim">${bloque.duracion_min || '–'} min</span>
-            <svg id="arrow-${bodyId}" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${bc}" stroke-width="2"
-                 style="transition:transform .25s;transform:${isFirst ? 'rotate(180deg)' : 'rotate(0deg)'}">
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
-          </div>
-        </div>
-        <!-- Cuerpo colapsable -->
-        <div id="${bodyId}" style="display:${isFirst ? 'flex' : 'none'};flex-direction:column;gap:10px;padding:0 14px 14px;border-top:1px solid var(--border)">
-          ${ejerciciosHtml || '<div style="font-size:11px;color:var(--dim);padding:8px 0">Sin ejercicios para este bloque.</div>'}
-        </div>
-      </div>`;
-  });
-
-  // Nota final
+  // Nota del entrenador al final
   if (plan.nota_final) {
     html += `
-      <div style="background:var(--bg);border-left:2px solid ${color};padding:10px 14px;border-radius:0 10px 10px 0">
+      <div style="background:var(--bg);border-left:2px solid ${color};padding:12px 16px;margin-top:8px">
         <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:${color};margin-bottom:4px">Nota del entrenador</div>
         <p style="font-size:12px;color:var(--muted);line-height:1.6;font-family:var(--font-serif);font-style:italic">${plan.nota_final}</p>
-      </div>`;
+      </div>
+    `;
   }
-
+  
   html += `
-    <button class="btn-ghost w-full" onclick="regenerateDayPlan('${plan.dia || ''}',this)">
-      Regenerar rutina →
-    </button>`;
+    <button class="btn-ghost w-full" style="margin-top:16px" onclick="regenerateDayPlan('${plan.dia}')">
+      Regenerar rutina (IA) →
+    </button>
+  `;
+  
+  blocksEl.innerHTML = html;
+};
 
-  container.innerHTML = html;
-}
+window.openBlock = function(idx) {
+  if (!currentDayPlan || !currentDayPlan.bloques[idx]) return;
+  const b = currentDayPlan.bloques[idx];
+  
+  goTo('s-day-exercises'); // Navegar a Pantalla 3
+  
+  document.getElementById('sde-block-name').textContent = b.nombre;
+  document.getElementById('sde-block-name').style.color = currentDayColor;
+  document.getElementById('sde-block-desc').textContent = b.descripcion || '';
+  
+  const listEl = document.getElementById('sde-exercises');
+  
+  if (!b.ejercicios || b.ejercicios.length === 0) {
+    listEl.innerHTML = '<p style="font-size:12px;color:var(--dim)">Sin ejercicios para este bloque.</p>';
+    return;
+  }
+  
+  listEl.innerHTML = b.ejercicios.map(ex => `
+    <div class="exercise-row">
+      <div class="exercise-name">${ex.nombre}</div>
+      <div class="exercise-meta">
+        <span class="exercise-badge" style="background:var(--s2);color:var(--text)">${ex.series} series</span>
+        <span class="exercise-badge" style="background:var(--s2);color:var(--accent)">${ex.reps}</span>
+        ${ex.descanso_seg ? `<span class="exercise-badge" style="background:var(--s2);color:var(--muted)">Descanso ${ex.descanso_seg}s</span>` : ''}
+      </div>
+      ${ex.tecnica ? `<p class="exercise-tip" style="margin-top:8px">" ${ex.tecnica} "</p>` : ''}
+      ${ex.equivalencia_sin_equipo ? `
+        <div class="exercise-equiv">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span><b>Ingenio:</b> ${ex.equivalencia_sin_equipo}</span>
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+};
 
-window.toggleBloque = function(bodyId, headerEl) {
-  const body  = document.getElementById(bodyId);
-  const arrow = document.getElementById('arrow-' + bodyId);
-  const open  = body.style.display === 'flex';
-  body.style.display  = open ? 'none' : 'flex';
-  if (arrow) arrow.style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+window.regenerateDayPlan = function(day) {
+  const w = WEEK.find(x => x.day === day || x.key === day);
+  if (!w) return;
+  
+  // Borrar del caché persistente
+  delete dayPlanCache[w.key];
+  storeSet('ATH_DAY_PLANS', { date: new Date().toLocaleDateString('es-PE'), plans: dayPlanCache });
+  
+  // Volver a llamar a la API
+  openDayModal(w.key, w.day, w.label, w.focus, w.color);
 };
 
 window.regenerateDayPlan = function(day, btn) {
