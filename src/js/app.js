@@ -33,14 +33,6 @@ const QUOTES = [
 ];
 let quoteIdx = 0;
 
-const DISCIPLINES = [
-  { name: 'Calistenia', desc: 'Fuerza relativa por progresión de palanca. Sin dependencia de carga.', color: 'var(--accent)' },
-  { name: 'Gimnasia / Anillas', desc: 'Estabilidad bajo inestabilidad. Control postural absoluto.', color: 'var(--amber)' },
-  { name: 'Parkour', desc: 'Explosividad y locomoción multiplanar impredecible.', color: 'var(--blue)' },
-  { name: 'Escalada (adaptada)', desc: 'Fuerza de agarre y de dedos. Sin necesidad de muro.', color: 'var(--accent)' },
-  { name: 'Movilidad / FRC', desc: 'Control articular activo. Convierte rango pasivo en funcional.', color: 'var(--danger)' },
-];
-
 const WEEK = [
   { key: 'lun', day: 'Lunes',    label: 'LUN', focus: 'Atletismo + movilidad ligera matutina',              color: 'var(--accent)' },
   { key: 'mar', day: 'Martes',   label: 'MAR', focus: 'Fuerza relativa — tirón, empuje, habilidades estáticas', color: 'var(--amber)' },
